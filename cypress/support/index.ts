@@ -15,6 +15,7 @@
 
 // Import commands.js using ES2015 syntax:
 import "./commands";
+import "./personalWorkspaces";
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
@@ -22,20 +23,46 @@ import "./commands";
 declare global {
   namespace Cypress {
     interface Chainable {
-      login();
-      preserveCookies();
+      /**
+       * this command sets the cookies from environment
+       */
+      login(): void;
+      /**
+       * this commands preserve the cookies across tests.
+       */
+      preserveCookies(): void;
 
+      /**
+       * this commands find a menu button in the current scope and click the target button.
+       * This function can also intercept the button
+       *
+       * @param text text of the target button
+       * @param intercept
+       */
       interceptMenuBtn(
         text: string,
         intercept?: { api: string; alias: string }
-      );
+      ): void;
 
       // personal_workspace.spec.ts
       getPersonalWorkspaceCard(
         name: string
       ): Cypress.Chainable<JQuery<HTMLElement>>;
-      visitPersonalWorkspace();
-      createPersonalWorkspace(): Cypress.Chainable<JQuery<HTMLElement>>;
+      /**
+       * this command visit the personal workspace section
+       */
+      visitPersonalWorkspace(): void;
+      /**
+       * This command create a personal workspace with desired name and description
+       * @param currentNumber
+       * @param name
+       * @param description
+       */
+      createPersonalWorkspace(
+        environment?: string,
+        name?: string,
+        description?: string
+      ): Cypress.Chainable<JQuery<HTMLElement>>;
       removePersonalWorkspace(name: string);
       removeAllPersonalWorkspaces();
       updatePersonalWorkspace(

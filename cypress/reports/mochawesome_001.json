@@ -1,0 +1,143 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 3,
+    "passes": 3,
+    "pending": 0,
+    "failures": 0,
+    "start": "2022-04-19T07:20:20.907Z",
+    "end": "2022-04-19T07:20:20.978Z",
+    "duration": 71,
+    "testsRegistered": 3,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "b9d60b82-b05e-493c-915c-d57dc0d77f0b",
+      "title": "",
+      "fullFile": "cypress/integration/e2e/file_transfer/google_drive.spec.js",
+      "file": "cypress/integration/e2e/file_transfer/google_drive.spec.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "63a40eae-edc8-4717-ba49-f60cbe183970",
+          "title": "google drive test",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "show login button if not login",
+              "fullTitle": "google drive test show login button if not login",
+              "timedOut": null,
+              "duration": 21,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "",
+              "err": {},
+              "uuid": "41549fbf-d627-4586-9fa6-34148d93ab59",
+              "parentUUID": "63a40eae-edc8-4717-ba49-f60cbe183970",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "login google drive ",
+              "fullTitle": "google drive test login google drive ",
+              "timedOut": null,
+              "duration": 15,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "",
+              "err": {},
+              "uuid": "03cc93ed-8d3f-441f-b523-8ffa2c60ea96",
+              "parentUUID": "63a40eae-edc8-4717-ba49-f60cbe183970",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "drop a file from google drive to personal volumne",
+              "fullTitle": "google drive test drop a file from google drive to personal volumne",
+              "timedOut": null,
+              "duration": 16,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "",
+              "err": {},
+              "uuid": "3b6fc14b-1292-4c31-8e98-a309da13e58b",
+              "parentUUID": "63a40eae-edc8-4717-ba49-f60cbe183970",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "41549fbf-d627-4586-9fa6-34148d93ab59",
+            "03cc93ed-8d3f-441f-b523-8ffa2c60ea96",
+            "3b6fc14b-1292-4c31-8e98-a309da13e58b"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 52,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.0.1"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": false,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.3"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/reports/",
+        "overwrite": false,
+        "json": true,
+        "html": false
+      },
+      "version": "6.2.0"
+    }
+  }
+}
