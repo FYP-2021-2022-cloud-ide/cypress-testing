@@ -1,8 +1,15 @@
+import { username } from "../../../support/commands";
+
 describe("dashboard test", () => {
   before(() => {
     cy.login();
     cy.visit("/");
-    cy.wait(3000);
+    // cy.waitUntil(() => cy.get(username), {
+    //   errorMsg: "This is a custom error message",
+    //   timeout: 5 * 60 * 1000,
+    //   interval: 500,
+    // });
+    cy.contains(username, { timeout: 5 * 60 * 1000 });
   });
 
   beforeEach(() => {
@@ -21,16 +28,15 @@ describe("dashboard test", () => {
 
   after(() => {});
 
-  afterEach(() => {
-    cy.wait(1000);
-  });
+  afterEach(() => {});
 
   it("list cookies", () => {
-    const shouldHave = ["appSession", "sub", "email", "userId", "name"];
-    cy.getCookies().then((cookies) => {
-      // ensure that the cookies contains all should have
-      expect(cookies.map((c) => c.name)).to.include.members(shouldHave);
-    });
+    // const shouldHave = ["appSession", "sub", "email", "userId", "name"];
+    // cy.getCookies().then((cookies) => {
+    //   // ensure that the cookies contains all should have
+    //   expect(cookies.map((c) => c.name)).to.include.members(shouldHave);
+    // });
+    cy.contains("mlkyeung");
   });
 
   // it("check topbar", () => {
@@ -60,28 +66,31 @@ describe("dashboard test", () => {
   //   themeBtn.click();
   // });
 
-  // it("check current run container match number", () => {
-  //   let current: number;
-  //   let quota: number;
-  //   let sidebarCurrent: number;
-  //   let sidebarQuota: number;
-  //   // get the number of current run container
+  it("check current run container match number", () => {
+    let current: number;
+    let quota: number;
+    let sidebarCurrent: number;
+    let sidebarQuota: number;
+    // get the number of current run container
 
-  //   cy.get("#page-content #current-run").then((el) => {
-  //     current = Number(el[0].innerText[0]);
-  //     quota = Number(el[0].innerText[2]);
-  //     // check it is not greater than quota
-  //     expect(current).at.most(quota);
-  //   });
+    cy.get("#page-content #current-run").within(() => {
+      cy.get("#active-num").then((el) => {
+        current = Number(el[0].innerText);
+      });
+      cy.get("#quota").then((el) => {
+        quota = Number(el[0].innerText);
+      });
+      expect(current).at.most(quota);
+    });
 
-  //   // check the number is the same on side bar
-  //   cy.get("#sidebar").get("#current-run-percentage");
-  //   cy.get("#sidebar #current-run-percentage").then((el) => {
-  //     sidebarCurrent = Number(el[0].innerText[0]);
-  //     sidebarQuota = Number(el[0].innerText[2]);
-  //     expect(current).equal(sidebarCurrent);
-  //     expect(quota).equal(sidebarQuota);
-  //   });
+    // check the number is the same on side bar
+    cy.get("#sidebar #current-run")
+      .should("have.attr", "data-containers")
+      .should("equal", current);
+    cy.get("#sidebar #current-run")
+      .should("have.attr", "data-quota")
+      .should("equal", quota);
+  });
 
   //   // check the div have same number of workspace cards
   //   cy.wait(1000).then(() => {

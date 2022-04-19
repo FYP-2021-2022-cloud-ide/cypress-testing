@@ -1,0 +1,17 @@
+{
+  "baseUrl": "https://codespace.ust.dev",
+  "chromeWebSecurity": false,
+  "env": {
+    "hostname": "https://codespace.ust.dev",
+    "password": "",
+    "username": "",
+    "cookies":[]
+  },
+  "reporter": "mochawesome",
+  "reporterOptions": {
+    "reportDir": "cypress/reports/",
+    "overwrite": false,
+    "json": true,
+    "html": false
+  },
+}

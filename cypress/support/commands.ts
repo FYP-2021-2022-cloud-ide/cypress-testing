@@ -25,6 +25,7 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
 import { recurse } from "cypress-recurse";
+import "cypress-wait-until";
 import { c } from "../fixtures/constant";
 
 const _ = Cypress._;
