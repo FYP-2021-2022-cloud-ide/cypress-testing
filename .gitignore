@@ -1,2 +1,3 @@
 cypress.json
 cypress/screenshots
+.DS_Store
