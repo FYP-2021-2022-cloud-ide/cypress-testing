@@ -1,4 +1,3 @@
-import { hostname } from "../../../support/commands";
 describe("Error test", () => {
   before(() => {
     cy.login();

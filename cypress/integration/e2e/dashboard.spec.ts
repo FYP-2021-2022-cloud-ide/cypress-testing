@@ -1,4 +1,4 @@
-import { username } from "../../../support/commands";
+import { username } from "../../support/commands";
 
 describe("dashboard test", () => {
   before(() => {

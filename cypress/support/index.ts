@@ -54,15 +54,14 @@ declare global {
       visitPersonalWorkspace(): void;
       /**
        * This command create a personal workspace with desired name and description
-       * @param currentNumber
        * @param name
        * @param description
        */
-      createPersonalWorkspace(
-        environment?: string,
-        name?: string,
-        description?: string
-      ): Cypress.Chainable<JQuery<HTMLElement>>;
+      createPersonalWorkspace(workspace?: {
+        environment?: string;
+        name?: string;
+        description?: string;
+      }): Cypress.Chainable<JQuery<HTMLElement>>;
       removePersonalWorkspace(name: string);
       removeAllPersonalWorkspaces();
       updatePersonalWorkspace(

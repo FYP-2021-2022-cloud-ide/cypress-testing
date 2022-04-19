@@ -1,5 +1,3 @@
-import { hostname, username } from "../../../support/commands";
-
 describe("personal workspace test", () => {
   before(() => {
     cy.login();
@@ -10,7 +8,7 @@ describe("personal workspace test", () => {
     cy.preserveCookies();
     cy.get("#page-content", { timeout: 5 * 60 * 1000 });
     // initial state check
-    cy.get("#sandbox-card-0").should("not.exist");
+    cy.get("#sandbox-grid");
   });
   afterEach(() => {
     cy.removeAllPersonalWorkspaces();
@@ -29,24 +27,24 @@ describe("personal workspace test", () => {
   });
 
   it("cannot have same personal workspace name", () => {
-    cy.createPersonalWorkspace("workspace1");
+    cy.createPersonalWorkspace({
+      environment: "java",
+      name: "workspace1",
+      description: "this is a test description ",
+    });
     cy.get("#sandbox-create-btn").click();
     cy.get('[data-entry-type="input"] > input').clear().type("workspace1");
-    cy.get(".text-red-400");
+    cy.contains("name crash");
     cy.get("#btn-ok").should("be.disabled");
     cy.get("#btn-cancel").click();
   });
 
   it("update a personal workspace", () => {
-    // cy.createPersonalWorkspace()
-    //   .find("p#sandbox-name")
-    //   .then((el) => {
-    //     let name = el[0].innerText;
-    //     cy.updatePersonalWorkspace(name, {
-    //       name: "Personal workspace name (updated)",
-    //       description: "Personal workspace description (udpated)",
-    //     });
-    //   });
+    cy.createPersonalWorkspace({ name: "test" });
+    cy.updatePersonalWorkspace("test", {
+      name: "new name",
+      description: "new description",
+    });
   });
 
   it("start a personal workspace", () => {

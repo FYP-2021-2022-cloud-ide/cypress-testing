@@ -54,16 +54,27 @@ Cypress.Commands.add("preserveCookies", () => {
     "name"
   );
 });
-
 Cypress.Commands.overwrite(
   "contains",
-  (originalFn, selector, text, options) => {
-    return originalFn(selector, text, {
-      matchCase: false,
-      ...options,
-    });
+  (originalFn, subject, filter, text, options = {}) => {
+    // determine if a filter argument was passed
+    if (typeof text === "object") {
+      options = text;
+      //@ts-ignore
+      text = filter;
+      filter = undefined;
+    }
+
+    options.matchCase = false;
+
+    //@ts-ignore
+    return originalFn(subject, filter, text, options);
   }
 );
+
+// Cypress.Commands.overwrite("contains", (originalFn ,content , options ) => {
+
+// });
 
 Cypress.Commands.add("interceptMenuBtn", (text, intercept) => {
   cy.get("button[id^=headlessui-menu-button-]").click();
@@ -72,8 +83,6 @@ Cypress.Commands.add("interceptMenuBtn", (text, intercept) => {
     const { api, alias } = intercept;
     cy.intercept(api).as(alias);
   }
-  cy.contains("button[id^=headlessui-menu-item-]", text, {
-    matchCase: false,
-  }).click();
+  cy.contains("button[id^=headlessui-menu-item-]", text).click();
   cy.get("div[id^=headlessui-menu-items-]").should("not.exist");
 });
