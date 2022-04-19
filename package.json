@@ -6,7 +6,7 @@
   "scripts": {
     "cypress": "cypress open ",
     "e2e": "rm -rf cypress/reports/*.json && cypress run --headed --browser edge --spec cypress/integration/e2e/**/*.ts ",
-    "e2e:after": "npm run  mochawesome-merge && npm run mochawesome-json-to-md && rm -rf cypress/reports/*.json",
+    "report": "npm run  mochawesome-merge && npm run mochawesome-json-to-md && rm -rf cypress/reports/*.json",
     "mochawesome-merge": "mochawesome-merge cypress/reports/*.json -o cypress/reports/combined-report.json",
     "mochawesome-json-to-md": "mochawesome-json-to-md -p cypress/reports/combined-report.json -o cypress/reports/combined-report.md "
   },

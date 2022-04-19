@@ -1,3 +1,4 @@
+import { c } from "../../../fixtures/constant";
 import { username } from "../../../support/commands";
 
 describe("dashboard test", () => {
@@ -92,11 +93,16 @@ describe("dashboard test", () => {
   it("check sidebar pages works normally", () => {
     // visit notification page
     // visit file transfer page
-    cy.get("#sidebar").within(() => {
-      cy.contains("Dashboard").closest("a").click().wait(3000);
-      cy.contains("Messages").closest("a").click().wait(3000);
-      cy.contains("File Transfer").closest("a").click().wait(3000);
+    cy.get("#sidebar #navigation #Messages").click();
+    cy.get("#page-content").within(() => {
+      cy.contains("Messages", { timeout: 10000 });
     });
+    cy.get("#sidebar #navigation [id='File Transfer']").click();
+    cy.get("#page-content").within(() => {
+      cy.contains("Personal Volume", { timeout: 10000 });
+    });
+    cy.get("#sidebar #navigation #Dashboard").click();
+    cy.contains(username);
   });
 
   // it("check tabs work normally", () => {

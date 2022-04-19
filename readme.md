@@ -16,7 +16,7 @@ Although unit testing's scope is bounded to the frontend, the end to end test ha
 
 > Set the environment variables in `cypress.json`. Please use a test account.
 
-1. `npm run e2e ; npm run e2e:after`: The first part run cypress and generate report in JSON format. The second generate markdown report from the json files. The report will be generated under `cypress/reports`.
+1. `npm run e2e ; npm run report`: The first part run cypress and generate report in JSON format. The second part generate markdown report from the json files. The report will be generated under `cypress/reports`.
 
 ## run test using `cypress open`
 
