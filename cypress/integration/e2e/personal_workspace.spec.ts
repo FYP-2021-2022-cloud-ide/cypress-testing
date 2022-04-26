@@ -17,49 +17,51 @@ describe("personal workspace test", () => {
   });
   after(() => {});
 
-  // it("create a personal workspace", () => {
-  //   cy.createPersonalWorkspace();
-  //   cy.get(".sandbox-grid #sandbox-card-0")
-  //     .find("#name")
-  //     .then((el) => {
-  //       const name = el[0].innerText;
-  //       cy.removePersonalWorkspace(name);
-  //     });
-  //   cy.get(".sandbox-grid #sandbox-card-0").should("not.exist");
-  // });
+  it("create a personal workspace", () => {
+    cy.createPersonalWorkspace();
+    cy.get(".sandbox-grid #sandbox-card-0")
+      .find("#name")
+      .then((el) => {
+        const name = el[0].innerText;
+        cy.removePersonalWorkspace(name);
+      });
+    cy.get(".sandbox-grid #sandbox-card-0").should("not.exist");
+  });
 
-  // it("cannot have same personal workspace name", () => {
-  //   cy.createPersonalWorkspace({
-  //     environment: "java",
-  //     name: "workspace1",
-  //     description: "this is a test description ",
-  //   });
-  //   cy.get("#sandbox-create-btn").click();
-  //   cy.get('[data-entry-type="input"] > input').clear().type("workspace1");
-  //   cy.contains("name crash");
-  //   cy.get("#btn-ok").should("be.disabled");
-  //   cy.get("#btn-cancel").click();
-  // });
+  it("cannot have same personal workspace name", () => {
+    cy.createPersonalWorkspace({
+      environment: "java",
+      name: "workspace1",
+      description: "this is a test description ",
+    });
+    cy.get("#sandbox-create-btn").click();
+    cy.get(".modal-form").within(() => {
+      cy.get('[data-entry-type="input"]  input').clear().type("workspace1");
+      cy.contains("name crash");
+      cy.get("#btn-ok").should("be.disabled");
+      cy.get("#btn-cancel").click();
+    });
+  });
 
-  // it("update a personal workspace", () => {
-  //   cy.createPersonalWorkspace({ name: "test" });
-  //   cy.updatePersonalWorkspace("test", {
-  //     name: "new name",
-  //     description: "new description",
-  //   });
-  // });
+  it("update a personal workspace", () => {
+    cy.createPersonalWorkspace({ name: "test" });
+    cy.updatePersonalWorkspace("test", {
+      name: "new name",
+      description: "new description",
+    });
+  });
 
-  // it("start and stop a personal workspace in personal workspace section", () => {
-  //   cy.createPersonalWorkspace({ name: "test" });
-  //   cy.startPersonalWorkspace("test");
-  //   cy.stopPersonalWorkspace("test");
-  // });
+  it("start and stop a personal workspace in personal workspace section", () => {
+    cy.createPersonalWorkspace({ name: "test" });
+    cy.startPersonalWorkspace("test");
+    cy.stopPersonalWorkspace("test");
+  });
 
-  // it("stop a personal workspace in the container list", () => {
-  //   cy.createPersonalWorkspace({ name: "test" });
-  //   cy.startPersonalWorkspace("test");
-  //   cy.stopContainer("test");
-  // });
+  it("stop a personal workspace in the container list", () => {
+    cy.createPersonalWorkspace({ name: "test" });
+    cy.startPersonalWorkspace("test");
+    cy.stopContainer("test");
+  });
 
   it("starting more personal workspace than quota in a roll", () => {
     cy.createPersonalWorkspace({ name: "test1" });
@@ -102,8 +104,47 @@ describe("personal workspace test", () => {
     cy.stopPersonalWorkspace("test3");
   });
 
-  it("update internal personal workspace, confirm", () => {});
+  it("update internal personal workspace, confirm", () => {
+    cy.createPersonalWorkspace({ name: "test" });
+    cy.updatePersonalWorkspaceInternal("test");
+    cy.intercept("/api/sandbox/updateSandboxImage").as("updateSandboxImage");
+    cy.get(".toaster-temp-container").find("#btn-ok").click();
+    cy.wait("@updateSandboxImage", { responseTimeout: 60 * 1000 }).then(
+      (interception) => {
+        const response = interception.response.body;
+        expect(response.success).equal(true);
+        cy.wait(1000).then(() => {
+          cy.get(".toaster-success").click({ multiple: true });
+          cy.getPersonalWorkspaceCard("test").should(
+            "not.have.attr",
+            "data-container-status"
+          );
+        });
+      }
+    );
+  });
 
-  it("update internal personal workspace, cancel", () => {});
+  it("update internal personal workspace, cancel", () => {
+    cy.createPersonalWorkspace({ name: "test" });
+    cy.updatePersonalWorkspaceInternal("test");
+    cy.get(".toaster-temp-container").find("#btn-cancel").click();
+    cy.intercept("/api/container/removeTempContainer").as(
+      "removeTempContainer"
+    );
+    cy.get(".modal-form").find("#btn-ok").click();
+    cy.wait("@removeTempContainer", { responseTimeout: 60 * 1000 }).then(
+      (interception) => {
+        const response = interception.response.body;
+        expect(response.success).equal(true);
+        cy.wait(1000).then(() => {
+          cy.get(".toaster-success").click({ multiple: true });
+          cy.getPersonalWorkspaceCard("test").should(
+            "not.have.attr",
+            "data-container-status"
+          );
+        });
+      }
+    );
+  });
 });
 export {};

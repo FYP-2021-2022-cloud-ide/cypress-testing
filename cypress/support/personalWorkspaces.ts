@@ -41,7 +41,9 @@ Cypress.Commands.add("createPersonalWorkspace", (workspace = {}) => {
   }).then((interception) => {
     const response = interception.response.body;
     expect(response.success).eq(true);
-    cy.wait(1000).then(() => cy.get(".toaster-success").click());
+    cy.wait(1000).then(() =>
+      cy.get(".toaster-success").click({ multiple: true })
+    );
   });
 });
 
@@ -110,7 +112,9 @@ Cypress.Commands.add("updatePersonalWorkspace", (name, newData) => {
   cy.wait("@update").then((interception) => {
     const response = interception.response.body;
     expect(response.success).eq(true);
-    cy.wait(1000).then(() => cy.get(".toaster-success").click());
+    cy.wait(1000).then(() =>
+      cy.get(".toaster-success").click({ multiple: true })
+    );
   });
   cy.getPersonalWorkspaceCard(newData.name)
     .find("p#description")
@@ -130,7 +134,9 @@ Cypress.Commands.add("startPersonalWorkspace", (name, expected = true) => {
     const response = interception.response.body;
     expect(response.success).eq(expected);
     cy.wait(1000).then(() =>
-      cy.get(expected ? ".toaster-success" : ".toaster-error").click()
+      cy
+        .get(expected ? ".toaster-success" : ".toaster-error")
+        .click({ multiple: true })
     );
   });
   if (expected)
@@ -173,11 +179,23 @@ Cypress.Commands.add("stopPersonalWorkspace", (name, expected = true) => {
       .and("eq", "DEFAULT");
 });
 
-Cypress.Commands.add("updatePersonalWorkspaceInternal", (name, confirm) => {
+Cypress.Commands.add("updatePersonalWorkspaceInternal", (name) => {
   cy.getPersonalWorkspaceCard(name).within(() => {
     cy.interceptMenuBtn("update internal", {
-      api: "/api/sandbox/removeSandbox",
-      alias: "removeSandbox",
+      api: "/api/container/addTempContainer",
+      alias: "addTempContainer",
+    });
+  });
+  cy.wait("@addTempContainer", {
+    responseTimeout: 60 * 1000,
+  }).then((interception) => {
+    const response = interception.response.body;
+    expect(response.success).equal(true);
+    cy.wait(1000).then(() => {
+      cy.get(".toaster-temp-container");
+      cy.getPersonalWorkspaceCard(name)
+        .should("have.attr", "data-container-status")
+        .and("eq", "DEFAULT");
     });
   });
 });

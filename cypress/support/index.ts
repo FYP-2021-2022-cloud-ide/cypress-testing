@@ -17,6 +17,8 @@
 import "./commands";
 import "./personalWorkspaces";
 import "./containers";
+import "./instructor";
+import "./message";
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
@@ -43,7 +45,7 @@ declare global {
       interceptMenuBtn(
         text: string,
         intercept?: { api: string; alias: string }
-      ): Cypress.Chainable<boolean>;
+      ): void;
 
       // personal_workspace.spec.ts
       getPersonalWorkspaceCard(
@@ -96,6 +98,52 @@ declare global {
        * @param confirm confirm to remove this
        */
       stopContainer(name: string, confirm?: boolean): void;
+      visitInstructorPage(): void;
+      removeAllTemplates(): void;
+      publishTemplate(name: string): void;
+      unpublishTemplate(name: string): void;
+      getTemplateCard(name: string): Cypress.Chainable<JQuery<HTMLElement>>;
+      removeTemplate(name: string): void;
+      createTemplate(template?: {
+        environment?: string;
+        name?: string;
+        description?: string;
+        allowQuestion?: boolean;
+        examMode?: boolean;
+        timeLimit?: number;
+      }): void;
+      updateTemplateInfo(
+        name: string,
+        newData: {
+          name: string;
+          description: string;
+          allowQuestion: boolean;
+          examMode: boolean;
+          timeLimit: number;
+        }
+      ): void;
+      updateTemplateInternal(name: string): void;
+      startTemplateWorkspace(name: string): void;
+      stopTemplateWorkspace(name: string): void;
+      removeAllEnv(): void;
+      getEnvCard(name: string): Cypress.Chainable<JQuery<HTMLElement>>;
+      removeEnv(
+        name: string,
+        expected?: boolean
+      ): Cypress.Chainable<JQuery<HTMLElement>>;
+      createEnv(env?: {
+        environment_choice?: string;
+        name?: string;
+        description?: string;
+      }): void;
+      updateEnv(
+        name: string,
+        newData: { name: string; description: string }
+      ): void;
+      updateEnvInternal(name: string): void;
+      makeAnnouncement(title: string, content: string): void;
+      sendMessage(): void;
+      removeAllMessages(): void;
     }
   }
 }

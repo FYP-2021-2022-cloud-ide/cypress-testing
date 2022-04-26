@@ -72,10 +72,6 @@ Cypress.Commands.overwrite(
   }
 );
 
-// Cypress.Commands.overwrite("contains", (originalFn ,content , options ) => {
-
-// });
-
 Cypress.Commands.add("interceptMenuBtn", (text, intercept) => {
   cy.get("button[id^=headlessui-menu-button-]").click();
   cy.get("div[id^=headlessui-menu-items-]");
@@ -86,5 +82,4 @@ Cypress.Commands.add("interceptMenuBtn", (text, intercept) => {
   }
   cy.contains("button[id^=headlessui-menu-item-]", text).click();
   cy.get("div[id^=headlessui-menu-items-]").should("not.exist");
-  cy.wrap(true);
 });
