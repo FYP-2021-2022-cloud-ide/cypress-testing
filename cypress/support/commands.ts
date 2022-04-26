@@ -78,11 +78,13 @@ Cypress.Commands.overwrite(
 
 Cypress.Commands.add("interceptMenuBtn", (text, intercept) => {
   cy.get("button[id^=headlessui-menu-button-]").click();
-  cy.get("div[id^=headlessui-menu-items-]").should("exist");
+  cy.get("div[id^=headlessui-menu-items-]");
+
   if (intercept) {
     const { api, alias } = intercept;
     cy.intercept(api).as(alias);
   }
   cy.contains("button[id^=headlessui-menu-item-]", text).click();
   cy.get("div[id^=headlessui-menu-items-]").should("not.exist");
+  cy.wrap(true);
 });

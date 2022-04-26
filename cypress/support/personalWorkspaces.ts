@@ -13,9 +13,7 @@ Cypress.Commands.add("visitPersonalWorkspace", () => {
 });
 
 Cypress.Commands.add("getPersonalWorkspaceCard", (name) => {
-  cy.get(".sandbox-grid")
-    .contains("#name", name)
-    .closest("div[id^=sandbox-card-]");
+  cy.get(".sandbox-grid").contains("#name", name).closest(".sandbox-card");
 });
 
 Cypress.Commands.add("createPersonalWorkspace", (workspace = {}) => {
@@ -117,6 +115,71 @@ Cypress.Commands.add("updatePersonalWorkspace", (name, newData) => {
   cy.getPersonalWorkspaceCard(newData.name)
     .find("p#description")
     .should("have.text", newData.description);
+});
+
+Cypress.Commands.add("startPersonalWorkspace", (name, expected = true) => {
+  cy.getPersonalWorkspaceCard(name).within(() => {
+    cy.interceptMenuBtn("start workspace", {
+      api: "/api/sandbox/addSandbox",
+      alias: "addSandbox",
+    });
+  });
+  cy.wait("@addSandbox", {
+    responseTimeout: 60 * 1000,
+  }).then((interception) => {
+    const response = interception.response.body;
+    expect(response.success).eq(expected);
+    cy.wait(1000).then(() =>
+      cy.get(expected ? ".toaster-success" : ".toaster-error").click()
+    );
+  });
+  if (expected)
+    cy.getPersonalWorkspaceCard(name)
+      .should("have.attr", "data-container-status")
+      .and("eq", "DEFAULT");
+  else
+    cy.getPersonalWorkspaceCard(name).should(
+      "not.have.attr",
+      "data-container-status"
+    );
+});
+
+Cypress.Commands.add("stopPersonalWorkspace", (name, expected = true) => {
+  cy.getPersonalWorkspaceCard(name).within(() => {
+    cy.interceptMenuBtn("stop workspace", {
+      api: "/api/sandbox/removeSandbox",
+      alias: "removeSandbox",
+    });
+  });
+  cy.wait("@removeSandbox", {
+    responseTimeout: 60 * 1000,
+  }).then((interception) => {
+    const response = interception.response.body;
+    expect(response.success).eq(expected);
+    cy.wait(1000).then(() =>
+      cy.get(expected ? ".toaster-success" : ".toaster-error").click({
+        multiple: true,
+      })
+    );
+  });
+  if (expected)
+    cy.getPersonalWorkspaceCard(name).should(
+      "not.have.attr",
+      "data-container-status"
+    );
+  else
+    cy.getPersonalWorkspaceCard(name)
+      .should("have.attr", "data-container-status")
+      .and("eq", "DEFAULT");
+});
+
+Cypress.Commands.add("updatePersonalWorkspaceInternal", (name, confirm) => {
+  cy.getPersonalWorkspaceCard(name).within(() => {
+    cy.interceptMenuBtn("update internal", {
+      api: "/api/sandbox/removeSandbox",
+      alias: "removeSandbox",
+    });
+  });
 });
 
 export {};

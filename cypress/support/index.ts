@@ -16,6 +16,7 @@
 // Import commands.js using ES2015 syntax:
 import "./commands";
 import "./personalWorkspaces";
+import "./containers";
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
@@ -42,7 +43,7 @@ declare global {
       interceptMenuBtn(
         text: string,
         intercept?: { api: string; alias: string }
-      ): void;
+      ): Cypress.Chainable<boolean>;
 
       // personal_workspace.spec.ts
       getPersonalWorkspaceCard(
@@ -62,8 +63,20 @@ declare global {
         name?: string;
         description?: string;
       }): Cypress.Chainable<JQuery<HTMLElement>>;
-      removePersonalWorkspace(name: string);
-      removeAllPersonalWorkspaces();
+      /**
+       *
+       * @param name name of the personal workspace
+       * @param expected whether this operation is expected to be successful
+       */
+      startPersonalWorkspace(name: string, expected?: boolean): void;
+      /**
+       *
+       * @param name name of the personal workspace
+       * @param expected whether this operation is expected to be successful
+       */
+      stopPersonalWorkspace(name: string, expected?: boolean): void;
+      removePersonalWorkspace(name: string): void;
+      removeAllPersonalWorkspaces(): void;
       updatePersonalWorkspace(
         name: string,
         newData: {
@@ -71,6 +84,18 @@ declare global {
           description: string;
         }
       ): Cypress.Chainable<JQuery<HTMLElement>>;
+      updatePersonalWorkspaceInternal(name: string, confirm?: boolean): void;
+      /**
+       *
+       * @param name name of container
+       */
+      getContainer(name: string): Cypress.Chainable<JQuery<HTMLElement>>;
+      /**
+       *
+       * @param name name of container
+       * @param confirm confirm to remove this
+       */
+      stopContainer(name: string, confirm?: boolean): void;
     }
   }
 }
